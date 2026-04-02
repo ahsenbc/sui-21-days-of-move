@@ -6,6 +6,26 @@ module hello_world::hello_world;
 
 use std::string;
 
+public struct Habit has copy, drop {
+    name: string::String, // Rehber vector<u8> demiş ama biz string::String ile daha modern tutalım
+    completed: bool,
+}
+
+public fun new_habit(name: string::String): Habit {
+    Habit {
+        name,
+        completed: false, // Yeni başlayan bir alışkanlık varsayılan olarak tamamlanmamıştır.
+    }
+}
+
+#[test]
+fun test_habit_creation() {
+    let my_habit_name = b"Sui Move Ogren".to_string();
+    let my_habit = new_habit(my_habit_name);
+    
+    assert!(my_habit.completed == false, 0);
+}
+
 const NUMBER: u64 = 42;
 const FLAG: bool = true;
 const MY_ADDRESS: address = @0x1;
