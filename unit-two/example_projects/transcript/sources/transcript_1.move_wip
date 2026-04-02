@@ -1,0 +1,52 @@
+// Copyright (c) Sui Foundation, Inc.
+// SPDX-License-Identifier: Apache-2.0
+
+/// A basic object example for Sui Move, part of the Sui Move intro course:
+/// https://github.com/sui-foundation/sui-move-intro-course
+module sui_intro_unit_two::transcript;
+
+public struct Transcript {
+    history: u8,
+    math: u8,
+    literature: u8,
+}
+
+public struct TranscriptObject has key {
+    id: UID,
+    history: u8,
+    math: u8,
+    literature: u8,
+}
+
+#[allow(lint(self_transfer))]
+public fun create_transcript_object(
+    history: u8,
+    math: u8,
+    literature: u8,
+    ctx: &mut TxContext,
+) {
+    let transcript_object = TranscriptObject {
+        id: object::new(ctx),
+        history,
+        math,
+        literature,
+    };
+    transfer::transfer(transcript_object, ctx.sender())
+}
+
+// You are allowed to retrieve the score but cannot modify it
+public fun view_score(transcript_object: &TranscriptObject): u8 {
+    transcript_object.literature
+}
+
+// You are allowed to view and edit the score but not allowed to delete it
+public fun update_score(transcript_object: &mut TranscriptObject, score: u8) {
+    transcript_object.literature = score
+}
+
+// You are allowed to do anything with the score, including view, edit, delete
+// the entire transcript itself.
+public fun delete_transcript(transcript_object: TranscriptObject) {
+    let TranscriptObject { id, .. } = transcript_object;
+    id.delete();
+}
