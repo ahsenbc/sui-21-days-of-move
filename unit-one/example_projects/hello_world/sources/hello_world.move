@@ -18,7 +18,7 @@ public struct HelloWorldObject has key {
 entry fun mint(ctx: &mut TxContext) {
     let object = HelloWorldObject {
         id: object::new(ctx),
-        text: b"Hello World!".to_string(),
+        text: b"Hello, Ahsen Berra!".to_string(),
     };
     transfer::transfer(object, ctx.sender());
 }
